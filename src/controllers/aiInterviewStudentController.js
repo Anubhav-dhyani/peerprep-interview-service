@@ -95,8 +95,8 @@ export async function getQuestionAudio(req, res) {
   if (!session) fail(404, "Interview session not found.");
   if (session.status !== "active" || !session.currentQuestion) fail(409, "No active question to speak.");
   if (Number(req.get("X-Interview-Version")) !== session.version) fail(409, "This question changed. Reload the interview.");
-  const audio = await speakQuestion(session.currentQuestion);
-  res.set({ "Content-Type": "audio/mpeg", "Content-Length": String(audio.length), "Cache-Control": "private, no-store" });
+  const { audio, contentType } = await speakQuestion(session.currentQuestion);
+  res.set({ "Content-Type": contentType, "Content-Length": String(audio.length), "Cache-Control": "private, no-store" });
   res.send(audio);
 }
 

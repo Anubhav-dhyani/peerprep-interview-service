@@ -4,7 +4,9 @@ This is a separate Node.js workspace for AI interview sessions. PeerPrep's main 
 
 ## Run
 
-Use Node 20 or newer. Copy `.env.example` to `.env`, set `MONGODB_URI`, `INTERVIEW_SERVICE_SECRET` and `OPENAI_API_KEY`, then run `npm install`, `npm run migrate:indexes` and `npm start`. The migration adds only the session indexes. Do not use `MONGODB_URI=memory` for deployment.
+Use Node 20 or newer. Copy `.env.example` to `.env`, set `MONGODB_URI`, `INTERVIEW_SERVICE_SECRET`, `AI_PROVIDER`, `AI_API_KEY`, and the provider's model names, then run `npm install`, `npm run migrate:indexes` and `npm start`. The migration adds only the session indexes. Do not use `MONGODB_URI=memory` for deployment.
+
+`AI_PROVIDER=gemini` uses the Gemini API for question generation, transcription, and speech. `AI_PROVIDER=openai` uses OpenAI for all three. Provider-specific legacy keys (`GEMINI_API_KEY` and `OPENAI_API_KEY`) remain supported, but `AI_API_KEY` is preferred. Switching providers requires only `.env` changes and a service restart.
 
 On PeerPrep's main API set `INTERVIEW_SERVICE_URL` to this service's private HTTPS base URL and set the same `INTERVIEW_SERVICE_SECRET`. The browser continues to call PeerPrep at `/api/student/ai-interviews`; PeerPrep validates the student's login and forwards requests with a short-lived service token. Keep `/internal/ai-interviews` inaccessible from the public internet where possible. `/health` is a liveness endpoint.
 
